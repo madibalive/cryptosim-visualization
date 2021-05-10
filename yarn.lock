@@ -3659,9 +3659,9 @@ crypto-random-string@^1.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
   integrity sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4=
 
-cryptosim@cryptosat/cryptosim#0.1.3:
+cryptosim@cryptosat/cryptosim#0.1.4:
   version "0.1.0"
-  resolved "https://codeload.github.com/cryptosat/cryptosim/tar.gz/3dffbd970c792b8e067ea4f4725b0e6299a01c6d"
+  resolved "https://codeload.github.com/cryptosat/cryptosim/tar.gz/34a5cb424ef5a1f0201f513adc62bc3a936bf754"
   dependencies:
     promise-timeout "^1.3.0"
     satellite.js "^4.1.3"
