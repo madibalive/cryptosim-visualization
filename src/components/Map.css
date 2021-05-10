@@ -2,19 +2,23 @@
   height: 100vh;
 }
 
-.map-toolbar {
-  height: 40px;
-  background-color: rgb(213, 185, 237);
+.map-info {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #ffffff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
 }
 
-.map-toolbar button {
-  background-color: rgb(50, 80, 168);
-  min-width: 20px;
-  padding: 5px;
-  border-width: 0px;
-  margin-left: 5px;
-  margin-right: 5px;
-  color: rgb(240, 240, 240);
-  border-radius: 2px;
-  font-weight: bold;
+.map-info .title {
+  text-align: right;
+}
+
+.map-info .value {
+  text-align: left;
 }
