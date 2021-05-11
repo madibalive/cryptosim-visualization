@@ -31,9 +31,6 @@ class ControlBar extends React.Component {
   }
 
    render() {
-    // Play/Pause
-    // Set Speed
-    // Select Satellite
     // Select Network
     const satelliteOptions = Array.from(this.universe.satellites().keys())
       .map(s => { return { value: s, label: s }});

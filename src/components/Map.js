@@ -15,15 +15,7 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.universe = props.universe;
-    this.gsnetwork = props.gsnetwork; // DELETE
-    this.showInfo = !!props.showInfo;
     this.mapRef = React.createRef();
-    const sat = this.universe.satellites().get(this.props.satelliteId);
-    this.state = {
-      displayPos: sat.getPosition(),
-      online: 'false',
-      closestStation: null
-    };
   }
 
   componentDidMount() {
@@ -98,7 +90,6 @@ class Map extends React.Component {
 
   animate() {
     this.draw();
-    // Request the next frame of the animation.
     requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -136,56 +127,11 @@ class Map extends React.Component {
       'type': 'FeatureCollection',
       'features': gsFeatures,
     }); 
-
-
-    const sat = this.universe.satellites().get(this.props.satelliteId);
-    this.setState({
-      displayPos: sat.getPosition(),
-      online: this.gsnetwork.visibleStations(sat).length > 0 ? 'true': 'false',
-      closestStation: this.gsnetwork.closestTo(sat),
-    });
-
   }
 
    render() {
-    const sat = this.universe.satellites().get(this.props.satelliteId);
-    const pos = this.state.displayPos;
-    const online = this.state.online;
-    let station = 'N/A';
-    let elevation = 'N/A';
-    let distance = 'N/A';
-    let azimuth = 'N/A';
-    if (this.state.closestStation != null) {
-      station = this.state.closestStation.id();
-      const angle = this.state.closestStation.angleTo(sat);
-      elevation = angle.elevation;
-      azimuth = angle.azimuth;
-      distance = angle.distance;
-    }
-
-    let maybeShowInfo = '';
-    if (this.showInfo) {
-      maybeShowInfo = (
-        <div className='map-info'>
-          <table>
-            <tbody>
-              <tr><td className='title'>Longitude:</td><td className='value'>{pos.longitude}</td></tr>
-              <tr><td className='title'>Latitude:</td><td className='value'>{pos.latitude}</td></tr>
-              <tr><td className='title'>Altitude:</td><td className='value'>{pos.altitude}</td></tr>
-              <tr><td className='title'>Online:</td><td className='value'>{online}</td></tr>
-              <tr><td className='title'>Station:</td><td className='value'>{station}</td></tr>
-              <tr><td className='title'>Distance:</td><td className='value'>{distance}</td></tr>
-              <tr><td className='title'>Elevation:</td><td className='value'>{elevation}</td></tr>
-              <tr><td className='title'>Azimuth:</td><td className='value'>{azimuth}</td></tr>
-            </tbody>
-          </table>
-        </div>
-      )
-    }
-
     return(
       <div className='map-container'>
-        {maybeShowInfo}
         <div ref={this.mapRef} style={{'height': '100%'}}/>
         }
       </div>

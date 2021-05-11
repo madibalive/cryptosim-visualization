@@ -21,3 +21,10 @@
   cursor: pointer;
   outline: inherit;
 }
+
+.control-bar select {
+  border-radius: 4px;
+  padding: 2px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
