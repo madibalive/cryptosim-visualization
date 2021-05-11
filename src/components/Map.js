@@ -18,7 +18,7 @@ class Map extends React.Component {
     this.gsnetwork = props.gsnetwork; // DELETE
     this.showInfo = !!props.showInfo;
     this.mapRef = React.createRef();
-    const sat = this.universe.satellites().get('crypto1');
+    const sat = this.universe.satellites().get(this.props.satelliteId);
     this.state = {
       displayPos: sat.getPosition(),
       online: 'false',
@@ -65,7 +65,6 @@ class Map extends React.Component {
           'icon-image': 'pulsing-dot'
         }
       });
-
 
       this.map.addSource('groundStations', {
         'type': 'geojson',
@@ -139,7 +138,7 @@ class Map extends React.Component {
     }); 
 
 
-    const sat = this.universe.satellites().get('crypto1');
+    const sat = this.universe.satellites().get(this.props.satelliteId);
     this.setState({
       displayPos: sat.getPosition(),
       online: this.gsnetwork.visibleStations(sat).length > 0 ? 'true': 'false',
@@ -149,7 +148,7 @@ class Map extends React.Component {
   }
 
    render() {
-    const sat = this.universe.satellites().get('crypto1');
+    const sat = this.universe.satellites().get(this.props.satelliteId);
     const pos = this.state.displayPos;
     const online = this.state.online;
     let station = 'N/A';
