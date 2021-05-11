@@ -169,18 +169,25 @@ class Map extends React.Component {
     const origin = sat.getPosition();
     const clock = this.universe.clock();
     const coords = []
-    for (let theta = 0; theta < 2 * Math.PI; theta += 0.1) {
+    for (let theta = 0; theta < 2 * Math.PI; theta += 0.15) {
       let dlat = Math.sin(theta);
       let dlng = Math.cos(theta);
-      for (let distance = 0; distance < 50; distance += 0.05) {
+      let high = 50;
+      let low = 0;
+      let pos = origin;
+      let count = 0;
+      while (high - low > 0.05) {
+        let distance = (high + low) / 2;
         const lat = origin.latitude + dlat * distance;
         const lng = origin.longitude + dlng * distance;
-        const pos = new GeoCoordinates(lat, lng, 0);
-        if (!sat.orbit().hasLineOfSight(clock, pos)) {
-          coords.push([pos.longitude, pos.latitude]);
-          break;
+        pos = new GeoCoordinates(lat, lng, 0);
+        if (sat.orbit().hasLineOfSight(clock, pos)) {
+          low = distance;
+        } else {
+          high = distance;
         }
       }
+      coords.push([pos.longitude, pos.latitude]);
     }
     coords.push(coords[0]);
     window.coords = coords;
