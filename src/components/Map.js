@@ -3,6 +3,7 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import './Map.css'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PulsingDot from './pulsingDot';
+import GeoCoordinates from 'cryptosim/lib/geoCoordinates';
 // import * as antenna from './antenna.svg';
 
 
@@ -84,6 +85,41 @@ class Map extends React.Component {
         }
       });
 
+      this.map.addSource('coverage', {
+        'type': 'geojson',
+        'data': {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [],
+          }
+        }
+      });
+         
+      // Add a new layer to visualize the polygon.
+      this.map.addLayer({
+        'id': 'coverage',
+        'type': 'fill',
+        'source': 'coverage', // reference the data source
+        'layout': {},
+        'paint': {
+          'fill-color': '#fccfcf',
+          'fill-opacity': 0.5
+        }
+      });
+
+      // Add a black outline around the polygon.
+      this.map.addLayer({
+        'id': 'outline',
+        'type': 'line',
+        'source': 'coverage',
+        'layout': {},
+        'paint': {
+          'line-color': '#555',
+          'line-width': 1
+        }
+      });
+
       this.animate();
     }.bind(this));  
   }
@@ -126,6 +162,34 @@ class Map extends React.Component {
     this.map.getSource('groundStations').setData({
       'type': 'FeatureCollection',
       'features': gsFeatures,
+    }); 
+
+    // Update satellite coverage
+    const sat = this.universe.satellites().get('crypto1');
+    const origin = sat.getPosition();
+    const clock = this.universe.clock();
+    const coords = []
+    for (let theta = 0; theta < 2 * Math.PI; theta += 0.1) {
+      let dlat = Math.sin(theta);
+      let dlng = Math.cos(theta);
+      for (let distance = 0; distance < 50; distance += 0.05) {
+        const lat = origin.latitude + dlat * distance;
+        const lng = origin.longitude + dlng * distance;
+        const pos = new GeoCoordinates(lat, lng, 0);
+        if (!sat.orbit().hasLineOfSight(clock, pos)) {
+          coords.push([pos.longitude, pos.latitude]);
+          break;
+        }
+      }
+    }
+    coords.push(coords[0]);
+    window.coords = coords;
+    this.map.getSource('coverage').setData({
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Polygon',
+        'coordinates': [coords],
+      }
     }); 
   }
 
