@@ -48,7 +48,7 @@ class CoverageArea extends React.Component {
         'fill-color': '#9afc9a',
         'fill-opacity': 0.5,
       }
-    }, 'satelliteLayer');
+    }, 'satelliteLayer'); // Note: abstraction leak!
 
     // Add a black outline around the polygon.
     map.addLayer({
