@@ -15,6 +15,10 @@ class Map extends React.Component {
     super(props);
     this.universe = props.universe;
     this.mapRef = React.createRef();
+    this.state = {
+      satellitePopup: null,
+      highlightedSatelliteId: null,
+    }
   }
 
   componentDidMount() {
@@ -100,7 +104,7 @@ class Map extends React.Component {
 
   setupStationPopup() {
     // Create a popup for displaying ground station info
-    let popup = new mapboxgl.Popup({
+    const popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false,
     });
@@ -109,8 +113,8 @@ class Map extends React.Component {
       // Change the cursor style as a UI indicator.
       this.map.getCanvas().style.cursor = 'pointer';
 
-      let coordinates = e.features[0].geometry.coordinates.slice();
-      let description = e.features[0].properties.id;
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const description = e.features[0].properties.id;
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -132,17 +136,26 @@ class Map extends React.Component {
 
   setupSatellitePopup() {
     // Create a popup for displaying ground station info
-    let popup = new mapboxgl.Popup({
+    const popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false,
     });
+
+    this.setState({
+      satellitePopup: popup,
+    })
 
     this.map.on('mouseenter', 'satelliteLayer', (e) => {
       // Change the cursor style as a UI indicator.
       this.map.getCanvas().style.cursor = 'pointer';
 
-      let coordinates = e.features[0].geometry.coordinates.slice();
-      let description = e.features[0].properties.id;
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const satelliteId = e.features[0].properties.id;
+      const description = satelliteId;
+
+      this.setState({
+        highlightedSatelliteId: satelliteId,
+      })
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -182,6 +195,15 @@ class Map extends React.Component {
       'type': 'FeatureCollection',
       'features': satFeatures,
     }); 
+
+    // Update satellite popup
+    if (this.state.satellitePopup && this.state.highlightedSatelliteId) {
+      const sat = this.universe.satellites().get(this.state.highlightedSatelliteId);
+      const pos = sat.getPosition();
+      const lng = pos.longitude;
+      const lat = pos.latitude;
+      this.state.satellitePopup.setLngLat([lng, lat]);
+    }
 
     // Update ground station locations
     const gsFeatures = [];
