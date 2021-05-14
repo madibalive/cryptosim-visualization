@@ -11,6 +11,7 @@ class ControlBar extends React.Component {
     super(props);
     this.universe = props.universe;
     this.state = {
+      speed: this.props.universe.clock().playSpeed(),
     };
   }
 
@@ -23,6 +24,7 @@ class ControlBar extends React.Component {
   }
 
   setSpeed(speed) {
+    this.setState({speed: speed});
     this.universe.clock().setSpeed(speed);
   }
 
@@ -61,7 +63,7 @@ class ControlBar extends React.Component {
         <label htmlFor='selectSatellite'>Satellite</label>
         <Select id='selectSatellite' options={satelliteOptions} onChange={this.setSatellite.bind(this)}/>
         <label htmlFor='selectSpeed'>Speed</label>
-        <Select id='selectSpeed' options={speedOptions} value={100} onChange={this.setSpeed.bind(this)}/>
+        <Select id='selectSpeed' options={speedOptions} selectedValue={this.state.speed} onChange={this.setSpeed.bind(this)}/>
         <label htmlFor='checkboxTrajectory' style={{'margin': '5px'}}>trajectory</label>
         <input onChange={this.setTrajectoryDisplay.bind(this)} type='checkbox' id='checkboxTrajectory' name='checkboxTrajectory' value='true' />
         <label htmlFor='checkboxCoverage' style={{'margin': '5px'}}>coverage</label>
