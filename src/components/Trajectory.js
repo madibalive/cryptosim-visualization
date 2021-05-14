@@ -71,7 +71,7 @@ class Trajectory extends React.Component {
       'paint': {
         'line-color': '#888',
         'line-width': 2,
-        'line-opacity': 0.8,
+        'line-opacity': 0.6,
       }
     }, 'satelliteLayer'); // Note: abstraction leak!
 
@@ -99,7 +99,7 @@ class Trajectory extends React.Component {
       'paint': {
         'line-color': '#888',
         'line-width': 2,
-        'line-opacity': 0.1,
+        'line-opacity': 0.2,
       }
     }, 'satelliteLayer'); // Note: abstraction leak!
 
