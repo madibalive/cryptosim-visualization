@@ -3,11 +3,9 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import './Map.css'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PulsingDot from './pulsingDot';
-import GeoCoordinates from 'cryptosim/lib/geoCoordinates';
 // import * as antenna from './antenna.svg';
 
 
-// mapboxgl.accessToken = Config.mapboxglAccessToken;
 mapboxgl.accessToken =
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
@@ -85,41 +83,6 @@ class Map extends React.Component {
         }
       });
 
-      this.map.addSource('coverage', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Polygon',
-            'coordinates': [],
-          }
-        }
-      });
-         
-      // Add a new layer to visualize the polygon.
-      this.map.addLayer({
-        'id': 'coverage',
-        'type': 'fill',
-        'source': 'coverage', // reference the data source
-        'layout': {},
-        'paint': {
-          'fill-color': '#fccfcf',
-          'fill-opacity': 0.5
-        }
-      });
-
-      // Add a black outline around the polygon.
-      this.map.addLayer({
-        'id': 'outline',
-        'type': 'line',
-        'source': 'coverage',
-        'layout': {},
-        'paint': {
-          'line-color': '#555',
-          'line-width': 1
-        }
-      });
-
       this.animate();
     }.bind(this));  
   }
@@ -163,48 +126,28 @@ class Map extends React.Component {
       'type': 'FeatureCollection',
       'features': gsFeatures,
     }); 
+  }
 
-    // Update satellite coverage
-    const sat = this.universe.satellites().get('crypto1');
-    const origin = sat.getPosition();
-    const clock = this.universe.clock();
-    const coords = []
-    for (let theta = 0; theta < 2 * Math.PI; theta += 0.15) {
-      let dlat = Math.sin(theta);
-      let dlng = Math.cos(theta);
-      let high = 50;
-      let low = 0;
-      let pos = origin;
-      let count = 0;
-      while (high - low > 0.05) {
-        let distance = (high + low) / 2;
-        const lat = origin.latitude + dlat * distance;
-        const lng = origin.longitude + dlng * distance;
-        pos = new GeoCoordinates(lat, lng, 0);
-        if (sat.orbit().hasLineOfSight(clock, pos)) {
-          low = distance;
-        } else {
-          high = distance;
-        }
+  childrenWithMap() {
+    const getMap = () => { return this.map; };
+    const childrenWithProps = React.Children.map(this.props.children, child => {
+      // checking isValidElement is the safe way and avoids a typescript error too
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          universe: this.universe,
+          getMap: getMap
+        });
       }
-      coords.push([pos.longitude, pos.latitude]);
-    }
-    coords.push(coords[0]);
-    window.coords = coords;
-    this.map.getSource('coverage').setData({
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Polygon',
-        'coordinates': [coords],
-      }
-    }); 
+      return child;
+    });
+    return childrenWithProps
   }
 
    render() {
     return(
       <div className='map-container'>
         <div ref={this.mapRef} style={{'height': '100%'}}/>
-        }
+        {this.childrenWithMap()}
       </div>
     )
   }

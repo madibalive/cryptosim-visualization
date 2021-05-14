@@ -32,6 +32,8 @@ const gsnetwork = GroundStationNetwork.load(
 // Make variables accessable to console for debugging
 window.universe = universe;
 window.gsnetwork = gsnetwork;
-window.sat = sat1;
+window.sat1 = sat1;
+window.sat2 = sat2;
+window.sat3 = sat3;
 
 export {universe, gsnetwork};
