@@ -7,8 +7,8 @@ class Trajectory extends React.Component {
   static defaultProps = {
     showPast: true,
     showFuture: true,
-    pastHorizonSeconds: 30 * 60 ,
-    futureHorizonSeconds: 30 * 60,
+    pastHorizonSeconds: 45 * 60 ,
+    futureHorizonSeconds: 45 * 60,
   }
 
   constructor(props) {
