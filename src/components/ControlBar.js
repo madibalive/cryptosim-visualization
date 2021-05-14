@@ -56,10 +56,12 @@ class ControlBar extends React.Component {
           <FontAwesomeIcon icon={faPlay} style={{padding: '4px'}}/>
         </button>
         <button onClick={this.pause.bind(this)}>
-          <FontAwesomeIcon icon={faPause} style={{padding: '4px'}}/>
+          <FontAwesomeIcon icon={faPause} style={{padding: '4px', marginRight: '10px'}}/>
         </button>
-        <Select options={satelliteOptions} onChange={this.setSatellite.bind(this)}/>
-        <Select options={speedOptions} value={100} onChange={this.setSpeed.bind(this)}/>
+        <label htmlFor='selectSatellite'>Satellite</label>
+        <Select id='selectSatellite' options={satelliteOptions} onChange={this.setSatellite.bind(this)}/>
+        <label htmlFor='selectSpeed'>Speed</label>
+        <Select id='selectSpeed' options={speedOptions} value={100} onChange={this.setSpeed.bind(this)}/>
         <label htmlFor='checkboxTrajectory' style={{'margin': '5px'}}>trajectory</label>
         <input onChange={this.setTrajectoryDisplay.bind(this)} type='checkbox' id='checkboxTrajectory' name='checkboxTrajectory' value='true' />
         <label htmlFor='checkboxCoverage' style={{'margin': '5px'}}>coverage</label>
