@@ -10,11 +10,20 @@ class CoverageArea extends React.Component {
       map: null,
       mapAreaId: 'coverage-polygon-' + uuidv4(),
       mapBorderId: 'coverage-outline-' + uuidv4(),
+      animationRequestId: null,
     }
   }
 
   componentDidMount() {
     this.update();
+  }
+
+  componentWillUnmount() {
+    if (!this.state.map) return;
+    cancelAnimationFrame(this.state.animationRequestId);
+    this.state.map.removeLayer(this.state.mapAreaId);
+    this.state.map.removeLayer(this.state.mapBorderId);
+    this.state.map.removeSource(this.state.mapAreaId);
   }
 
   maybeInitializeMap() {
@@ -104,7 +113,10 @@ class CoverageArea extends React.Component {
   update() {
     this.maybeInitializeMap();
     this.updateCoverage();
-    requestAnimationFrame(this.update.bind(this));
+    const animationRequestId = requestAnimationFrame(this.update.bind(this));
+    this.setState({
+      animationRequestId: animationRequestId,
+    });
   }
 
   render() {

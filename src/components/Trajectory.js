@@ -18,11 +18,21 @@ class Trajectory extends React.Component {
       map: null,
       mapPastTrajectoryId: 'trajectory-past-' + uuidv4(),
       mapFutureTrajectoryId: 'trajectory-future-' + uuidv4(),
+      animationRequestId: null,
     }
   }
 
   componentDidMount() {
     this.update();
+  }
+
+  componentWillUnmount() {
+    if (!this.state.map) return;
+    cancelAnimationFrame(this.state.animationRequestId);
+    this.state.map.removeLayer(this.state.mapPastTrajectoryId);
+    this.state.map.removeLayer(this.state.mapFutureTrajectoryId);
+    this.state.map.removeSource(this.state.mapPastTrajectoryId);
+    this.state.map.removeSource(this.state.mapFutureTrajectoryId);
   }
 
   maybeInitializeMap() {
@@ -152,7 +162,10 @@ class Trajectory extends React.Component {
     this.maybeInitializeMap();
     if (this.props.showPast) this.updatePastTrajectory();
     if (this.props.showFuture) this.updateFutureTrajectory();
-    requestAnimationFrame(this.update.bind(this));
+    const animationRequestId = requestAnimationFrame(this.update.bind(this));
+    this.setState({
+      animationRequestId: animationRequestId,
+    })
   }
 
   render() {

@@ -30,6 +30,14 @@ class ControlBar extends React.Component {
     this.props.setSatellite(satelliteId);
   }
 
+  setTrajectoryDisplay(e) {
+    this.props.setTrajectoryDisplay(e.target.checked);
+  }
+
+  setCoverageDisplay(e) {
+    this.props.setCoverageDisplay(e.target.checked);
+  }
+
    render() {
     // Select Network
     const satelliteOptions = Array.from(this.universe.satellites().keys())
@@ -52,6 +60,10 @@ class ControlBar extends React.Component {
         </button>
         <Select options={satelliteOptions} onChange={this.setSatellite.bind(this)}/>
         <Select options={speedOptions} value={100} onChange={this.setSpeed.bind(this)}/>
+        <label htmlFor='checkboxTrajectory' style={{'margin': '5px'}}>trajectory</label>
+        <input onChange={this.setTrajectoryDisplay.bind(this)} type='checkbox' id='checkboxTrajectory' name='checkboxTrajectory' value='true' />
+        <label htmlFor='checkboxCoverage' style={{'margin': '5px'}}>coverage</label>
+        <input onChange={this.setCoverageDisplay.bind(this)} type='checkbox' id='checkboxCoverage' name='checkboxCoverage' value='true' />
       </div>
     )
   }
