@@ -1,7 +1,7 @@
 import React from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import './Map.css'
 import 'mapbox-gl/dist/mapbox-gl.css';
+import './Map.css'
 import PulsingDot from './pulsingDot';
 // import * as antenna from './antenna.svg';
 
@@ -83,6 +83,36 @@ class Map extends React.Component {
         }
       });
 
+      // Create a popup for displaying ground station info
+      let popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      });
+
+      this.map.on('mouseenter', 'groundStationLayer', (e) => {
+        // Change the cursor style as a UI indicator.
+        this.map.getCanvas().style.cursor = 'pointer';
+
+        let coordinates = e.features[0].geometry.coordinates.slice();
+        let description = e.features[0].properties.id;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates).setHTML(description).addTo(this.map);
+      });
+
+      this.map.on('mouseleave', 'groundStationLayer', () => {
+        this.map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
       this.animate();
     }.bind(this));  
   }
@@ -116,6 +146,9 @@ class Map extends React.Component {
       const pos = station.position();
       gsFeatures.push({
         'type': 'Feature',
+        'properties': {
+          'id': station.id(),
+        },
         'geometry': {
           'type': 'Point',
           'coordinates': [pos.longitude, pos.latitude],

@@ -1,3 +1,13 @@
 .map-container {
   height: 100vh;
 }
+
+.mapboxgl-popup-content {
+  background-color: rgba(35, 55, 75, 0.9);
+  font-family: monospace;
+  color: #ffffff;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: rgba(35, 55, 75, 0.9);
+}
