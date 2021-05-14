@@ -31,6 +31,7 @@ class Map extends React.Component {
       this.setupStations();
       this.setupSatellites();
       this.setupStationPopup();
+      this.setupSatellitePopup();
       this.animate();
     }.bind(this));
   }
@@ -129,6 +130,38 @@ class Map extends React.Component {
     });
   }
 
+  setupSatellitePopup() {
+    // Create a popup for displaying ground station info
+    let popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    this.map.on('mouseenter', 'satelliteLayer', (e) => {
+      // Change the cursor style as a UI indicator.
+      this.map.getCanvas().style.cursor = 'pointer';
+
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      let description = e.features[0].properties.id;
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+      popup.setLngLat(coordinates).setHTML(description).addTo(this.map);
+    });
+
+    this.map.on('mouseleave', 'satelliteLayer', () => {
+      this.map.getCanvas().style.cursor = '';
+      popup.remove();
+    });
+  }
+
   draw() {
     // Update satellite locations
     const satFeatures = [];
@@ -136,6 +169,9 @@ class Map extends React.Component {
       const pos = sat.getPosition();
       satFeatures.push({
         'type': 'Feature',
+        'properties': {
+          'id': sat.id(),
+        },
         'geometry': {
           'type': 'Point',
           'coordinates': [pos.longitude, pos.latitude],
