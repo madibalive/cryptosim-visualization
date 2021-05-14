@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import GeoCoordinates from 'cryptosim/lib/geoCoordinates';
 
 class CoverageArea extends React.Component {
@@ -6,7 +7,9 @@ class CoverageArea extends React.Component {
     super(props);
     this.props = props;
     this.state = {
-      map: null
+      map: null,
+      mapAreaId: 'coverage-polygon-' + uuidv4(),
+      mapBorderId: 'coverage-outline-' + uuidv4(),
     }
   }
 
@@ -23,8 +26,8 @@ class CoverageArea extends React.Component {
 
     // unclear why this satement below is necessary. Seems like there is
     // a race condition happenning somehow.
-    if (map.getSource('coverage')) return;
-    map.addSource('coverage', {
+    if (map.getSource(this.state.mapAreaId)) return;
+    map.addSource(this.state.mapAreaId, {
       'type': 'geojson',
       'data': {
         'type': 'Feature',
@@ -37,9 +40,9 @@ class CoverageArea extends React.Component {
 
     // Add a new layer to visualize the polygon.
     map.addLayer({
-      'id': 'coverage',
+      'id': this.state.mapAreaId,
       'type': 'fill',
-      'source': 'coverage', // reference the data source
+      'source': this.state.mapAreaId,
       'layout': {},
       'paint': {
         'fill-color': '#9afc9a',
@@ -49,9 +52,9 @@ class CoverageArea extends React.Component {
 
     // Add a black outline around the polygon.
     map.addLayer({
-      'id': 'outline',
+      'id': this.state.mapBorderId,
       'type': 'line',
-      'source': 'coverage',
+      'source': this.state.mapAreaId,
       'layout': {},
       'paint': {
         'line-color': '#555',
@@ -89,7 +92,7 @@ class CoverageArea extends React.Component {
       boundary.push([pos.longitude, pos.latitude]);
     }
     boundary.push(boundary[0]);
-    this.state.map.getSource('coverage').setData({
+    this.state.map.getSource(this.state.mapAreaId).setData({
       'type': 'Feature',
       'geometry': {
         'type': 'Polygon',
