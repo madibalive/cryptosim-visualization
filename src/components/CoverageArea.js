@@ -105,7 +105,7 @@ class CoverageArea extends React.Component {
   }
 
   render() {
-    return <div>{this.props.satellite.id()}</div>
+    return null;
   }
 
 }
