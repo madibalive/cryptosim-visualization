@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import Map from './components/Map';
 import ControlBar from './components/ControlBar';
 import CoverageArea from './components/CoverageArea';
