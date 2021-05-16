@@ -4,7 +4,7 @@ import GroundStationNetwork from 'cryptosim/lib/groundStationNetwork';
 import SimulatedClock from 'cryptosim/lib/clocks/simulatedClock';
 
 const clock = new SimulatedClock(new Date(2021, 2, 1, 2, 30, 0, 0));
-clock.setSpeed(100);
+clock.setSpeed(10);
 clock.play();
 const universe = new Universe(clock);
 
