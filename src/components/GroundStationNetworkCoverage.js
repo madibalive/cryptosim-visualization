@@ -90,10 +90,10 @@ class GroundStationNetworkCoverage extends React.Component {
       'source': this.state.mapAreaId,
       'layout': {},
       'paint': {
-        'fill-color': '#9afc9a',
+        'fill-color': '#333344',
         'fill-opacity': 0.5,
       }
-    }, 'satelliteLayer'); // Note: abstraction leak!
+    }, 'offlineSatelliteLayer'); // Note: abstraction leak!
 
     this.setState({map: map})
   }

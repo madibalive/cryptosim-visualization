@@ -73,7 +73,7 @@ class Trajectory extends React.Component {
         'line-width': 2,
         'line-opacity': 0.6,
       }
-    }, 'satelliteLayer'); // Note: abstraction leak!
+    }, 'offlineSatelliteLayer'); // Note: abstraction leak!
 
     // setup future trajectory
     map.addSource(this.state.mapFutureTrajectoryId, {
@@ -101,7 +101,7 @@ class Trajectory extends React.Component {
         'line-width': 2,
         'line-opacity': 0.2,
       }
-    }, 'satelliteLayer'); // Note: abstraction leak!
+    }, 'offlineSatelliteLayer'); // Note: abstraction leak!
 
     this.setState({map: map})
   }

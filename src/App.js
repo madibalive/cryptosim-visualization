@@ -41,7 +41,7 @@ class App extends React.Component {
                     setCoverageDisplay={this.setCoverageDisplay.bind(this)}
                     setTrajectoryDisplay={this.setTrajectoryDisplay.bind(this)}/>
         <SatelliteInfoBar satellite={sat} gsnetwork={gsnetwork} />
-        <Map universe={universe}>
+        <Map universe={universe} gsnetwork={gsnetwork}>
           {coverage}
           {trajectory}
         </Map>

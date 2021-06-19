@@ -1,10 +1,28 @@
  
 class PulsingDot {
 
-  constructor(size, map) {
+  static defaultColors = {
+    outer: {
+      r: 255,
+      g: 200,
+      b: 200,
+    },
+
+    inner: {
+      r: 255,
+      g: 100,
+      b: 100,
+    },
+  }
+
+  constructor(size, map, colors) {
+    if (colors === undefined) {
+      colors = PulsingDot.defaultColors;
+    }
     this.size = size;
     this.width = size;
     this.height = size;
+    this.colors = colors;
     this.data = new Uint8Array(size * size * 4);
     this.map = map
   }
@@ -35,7 +53,9 @@ class PulsingDot {
       0,
       Math.PI * 2
     );
-    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+    // outer circle
+    context.fillStyle = `rgba(${this.colors.outer.r}, ${this.colors.outer.g},
+                              ${this.colors.outer.b}, ${1 - t})`;
     context.fill();
 
     // draw inner circle
@@ -47,7 +67,9 @@ class PulsingDot {
       0,
       Math.PI * 2
     );
-    context.fillStyle = 'rgba(255, 100, 100, 1)';
+    // inner circle
+    context.fillStyle = `rgba(${this.colors.inner.r}, ${this.colors.inner.g},
+                              ${this.colors.inner.b}, 1)`;
     context.strokeStyle = 'white';
     context.lineWidth = 2 + 4 * (1 - t);
     context.fill();
