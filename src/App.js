@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Map from './components/Map';
 import ControlBar from './components/ControlBar';
-import SatelliteCoverageArea from './components/SatelliteCoverageArea';
+import GroundStationNetworkCoverage from './components/GroundStationNetworkCoverage';
 import SatelliteInfoBar from './components/SatelliteInfoBar';
 import Trajectory from './components/Trajectory';
 import {universe, gsnetwork} from './demo';
@@ -33,7 +33,7 @@ class App extends React.Component {
   render() {
     const sat = universe.satellites().get(this.state.satelliteId);
     let trajectory = this.state.displayTrajectory ? <Trajectory satellite={sat}/> : null;
-    let coverage = this.state.displayCoverage ? <SatelliteCoverageArea satellite={sat}/> : null;
+    let coverage = this.state.displayCoverage ? <GroundStationNetworkCoverage gsnetwork={gsnetwork}/> : null;
     return (
       <div className="App">
         <ControlBar universe={universe}

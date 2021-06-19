@@ -2,7 +2,7 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import GeoCoordinates from 'cryptosim/lib/geoCoordinates';
 
-class CoverageArea extends React.Component {
+class SatelliteCoverage extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -125,4 +125,4 @@ class CoverageArea extends React.Component {
 
 }
 
-export default CoverageArea
+export default SatelliteCoverage
