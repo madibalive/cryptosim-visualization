@@ -1,6 +1,6 @@
 {
   "name": "@cryptosat/cryptosim-visualization",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "dependencies": {
     "@cryptosat/cryptosim": "^0.1.6",
@@ -90,6 +90,7 @@
   "files": [
     "dist/"
   ],
+  "main": "dist/export.js",
   "eslintConfig": {
     "extends": [
       "react-app",
