@@ -1,18 +1,28 @@
 {
-  "name": "cryptosim-visualization",
+  "name": "@cryptosat/cryptosim-visualization",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
-    "@babel/core": "7.12.3",
+    "@cryptosat/cryptosim": "^0.1.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@turf/turf": "^6.4.0",
+    "css-loader": "4.3.0",
+    "mapbox-gl": "^2.2.0",
+    "uuid": "^8.3.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@turf/turf": "^6.4.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "babel-eslint": "^10.1.0",
@@ -23,8 +33,6 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "cryptosim": "cryptosat/cryptosim#0.1.7",
-    "css-loader": "4.3.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^7.11.0",
@@ -45,7 +53,6 @@
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
-    "mapbox-gl": "^2.2.0",
     "mini-css-extract-plugin": "0.11.3",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
@@ -68,7 +75,6 @@
     "terser-webpack-plugin": "4.2.3",
     "ts-pnp": "1.2.0",
     "url-loader": "4.1.1",
-    "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.1",
@@ -78,8 +84,12 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy": "mkdir -p dist && cp -r src/components/* dist/"
   },
+  "files": [
+    "dist/"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import GeoCoordinates from 'cryptosim/lib/geoCoordinates';
+import GeoCoordinates from '@cryptosat/cryptosim/lib/geoCoordinates';
 import crypto from 'crypto'
 import * as turf from '@turf/turf'
 

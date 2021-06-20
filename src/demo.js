@@ -1,7 +1,7 @@
-import Satellite from 'cryptosim/lib/satellite';
-import Universe from 'cryptosim/lib/universe';
-import GroundStationNetwork from 'cryptosim/lib/groundStationNetwork';
-import SimulatedClock from 'cryptosim/lib/clocks/simulatedClock';
+import Satellite from '@cryptosat/cryptosim/lib/satellite';
+import Universe from '@cryptosat/cryptosim/lib/universe';
+import GroundStationNetwork from '@cryptosat/cryptosim/lib/groundStationNetwork';
+import SimulatedClock from '@cryptosat/cryptosim/lib/clocks/simulatedClock';
 
 const clock = new SimulatedClock(new Date(2021, 2, 1, 2, 30, 0, 0));
 clock.setSpeed(10);
@@ -27,7 +27,7 @@ const sat1 = new Satellite(universe, 'crypto1', ISS_TLE[0], ISS_TLE[1]);
 const sat2 = new Satellite(universe, 'crypto2', RBLE_TLE[0], RBLE_TLE[1]);
 const sat3 = new Satellite(universe, 'crypto3', KE2M_TLE[0], KE2M_TLE[1]);
 const gsnetwork = GroundStationNetwork.load(
-    universe, require('cryptosim/data/rbcNetwork'));
+    universe, require('@cryptosat/cryptosim/data/rbcNetwork'));
 
 // Make variables accessable to console for debugging
 window.universe = universe;
