@@ -4,12 +4,19 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css'
 import PulsingDot from './pulsingDot';
 // import * as antenna from './antenna.svg';
+import GeoCoordinates from '@cryptosat/cryptosim/lib/geoCoordinates';
 
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
 
 class Map extends React.Component {
+
+  static defaultProps = {
+    zoom: 2,
+    minZoom: 1.5,
+    center: new GeoCoordinates(0, 0, 0),
+  }
 
   constructor(props) {
     super(props);
@@ -24,8 +31,9 @@ class Map extends React.Component {
     this.map = new mapboxgl.Map({
       container: this.mapRef.current,
       style: 'mapbox://styles/mapbox/dark-v10',
-      zoom: 2,
-      minZoom: 1.5,
+      zoom: this.props.zoom,
+      minZoom: this.props.minZoom,
+      center: [this.props.center.longitude, this.props.center.latitude],
       renderWorldCopies: true,
     });
 
