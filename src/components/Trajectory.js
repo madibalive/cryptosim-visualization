@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import SimulatedClock from 'cryptosim/lib/clocks/simulatedClock';
+import SimulatedClock from '@cryptosat/cryptosim/lib/clocks/simulatedClock';
 
 class Trajectory extends React.Component {
 
