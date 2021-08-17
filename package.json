@@ -1,6 +1,6 @@
 {
   "name": "@cryptosat/cryptosim-visualization",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "dependencies": {
     "@cryptosat/cryptosim": "^0.1.6",
