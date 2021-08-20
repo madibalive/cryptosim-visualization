@@ -55,7 +55,7 @@ class PulsingDot {
     );
     // outer circle
     context.fillStyle = `rgba(${this.colors.outer.r}, ${this.colors.outer.g},
-                              ${this.colors.outer.b}, ${0.9 - t})`;
+                              ${this.colors.outer.b}, ${1 - t})`;
     context.fill();
 
     // draw inner circle
@@ -70,7 +70,10 @@ class PulsingDot {
     // inner circle
     context.fillStyle = `rgba(${this.colors.inner.r}, ${this.colors.inner.g},
                               ${this.colors.inner.b}, 1)`;
+    context.strokeStyle = '#202020';
+    context.lineWidth =  0.8 * (1 - t);
     context.fill();
+    context.stroke();
 
     // update this image's data with data from the canvas
     this.data = context.getImageData(
