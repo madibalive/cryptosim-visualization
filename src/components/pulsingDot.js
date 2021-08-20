@@ -4,14 +4,14 @@ class PulsingDot {
   static defaultColors = {
     outer: {
       r: 255,
-      g: 200,
-      b: 200,
+      g: 57,
+      b: 60,
     },
 
     inner: {
       r: 255,
-      g: 100,
-      b: 100,
+      g: 57,
+      b: 60,
     },
   }
 
@@ -55,7 +55,7 @@ class PulsingDot {
     );
     // outer circle
     context.fillStyle = `rgba(${this.colors.outer.r}, ${this.colors.outer.g},
-                              ${this.colors.outer.b}, ${1 - t})`;
+                              ${this.colors.outer.b}, ${0.9 - t})`;
     context.fill();
 
     // draw inner circle
@@ -70,10 +70,7 @@ class PulsingDot {
     // inner circle
     context.fillStyle = `rgba(${this.colors.inner.r}, ${this.colors.inner.g},
                               ${this.colors.inner.b}, 1)`;
-    context.strokeStyle = 'white';
-    context.lineWidth = 2 + 4 * (1 - t);
     context.fill();
-    context.stroke();
 
     // update this image's data with data from the canvas
     this.data = context.getImageData(

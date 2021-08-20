@@ -85,8 +85,8 @@ class Map extends React.Component {
       'pulsing-dot-red', new PulsingDot(100, this.map), { pixelRatio: 2 });
 
     const greenColors = {
-      outer: { r: 201, g: 200, b: 200 },
-      inner: {r: 92, g: 207, b: 78 },
+      outer: { r: 97, g: 205, b: 85 },
+      inner: {r: 97, g: 205, b: 85 },
     }
 
     this.map.addImage(
