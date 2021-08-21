@@ -113,7 +113,8 @@ class Map extends React.Component {
       'type': 'symbol',
       'source': 'satellites-offline',
       'layout': {
-        'icon-image': 'pulsing-dot-red'
+        'icon-image': 'pulsing-dot-red',
+        'icon-allow-overlap': true,
       }
     });
 
@@ -130,7 +131,8 @@ class Map extends React.Component {
       'type': 'symbol',
       'source': 'satellites-online',
       'layout': {
-        'icon-image': 'pulsing-dot-green'
+        'icon-image': 'pulsing-dot-green',
+        'icon-allow-overlap': true,
       }
     });
   }

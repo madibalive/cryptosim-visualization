@@ -1,5 +1,6 @@
 .satellite-info-bar {
-  background-color: rgba(39, 34, 64, 0.7);
+  background-color: #292d36;
+  opacity: 0.7;
   color: #ffffff;
   padding: 6px 12px;
   font-family: monospace;
