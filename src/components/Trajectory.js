@@ -108,6 +108,7 @@ class Trajectory extends React.Component {
 
   updatePastTrajectory() {
     if (!this.state.map) return;
+    const clockwise = this.isLongitudeAscending(this.props.satellite.orbit());
     let trajectory = []
     let clock = new SimulatedClock(this.props.universe.clock().now());
     const step = -1 * 60 * 1000;
@@ -115,8 +116,13 @@ class Trajectory extends React.Component {
     let lastPos = null;
     for (let i = 0; i < numSteps; i += 1) {
       const pos = this.props.satellite.orbit().getPosition(clock);
-      if (lastPos && pos.longitude > lastPos.longitude) {
+      // I'm not sure about this logic at all
+      if (lastPos && clockwise && pos.longitude > 0 && lastPos.longitude < 0) {
         pos.longitude -= 360;
+      }
+      // I'm not sure about this logic at all
+      if (lastPos && !clockwise && pos.longitude < 0 && lastPos.longitude > 0) {
+        pos.longitude += 360;
       }
       trajectory.push([pos.longitude, pos.latitude]);
       clock.advance(step);
@@ -132,17 +138,31 @@ class Trajectory extends React.Component {
     }); 
   }
 
+  isLongitudeAscending(orbit) {
+    let clock = new SimulatedClock(this.props.universe.clock().now());
+    const pos1 = orbit.getPosition(clock);
+    clock.advance(1);
+    const pos2 = orbit.getPosition(clock);
+    return pos2.longitude > pos1.longitude;
+  }
+
   updateFutureTrajectory() {
     if (!this.state.map) return;
     let trajectory = []
     let clock = new SimulatedClock(this.props.universe.clock().now());
+    const clockwise = this.isLongitudeAscending(this.props.satellite.orbit());
     const step = 1 * 60 * 1000;
     const numSteps = Math.abs(this.props.pastHorizonSeconds * 1000 / step);
     let lastPos = null;
     for (let i = 0; i < numSteps; i += 1) {
       const pos = this.props.satellite.orbit().getPosition(clock);
-      if (lastPos && pos.longitude < lastPos.longitude) {
+      // I'm not sure about this logic at all
+      if (lastPos && clockwise && pos.longitude < 0 &&  lastPos.longitude > 0) {
         pos.longitude += 360;
+      }
+      // I'm not sure about this logic at all
+      if (lastPos && !clockwise && pos.longitude > 0 && lastPos.longitude < 0) {
+        pos.longitude -= 360;
       }
       trajectory.push([pos.longitude, pos.latitude]);
       clock.advance(step);
@@ -155,7 +175,7 @@ class Trajectory extends React.Component {
         'type': 'LineString',
         'coordinates': trajectory,
       }
-    }); 
+    });
   }
 
   update() {
