@@ -45,8 +45,20 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn test_gen_keypair() {
+        let (_pubkey, _privkey) = gen_keypair();
+        assert!(true);
+    }
+
+    #[test]
+    fn test_init_ballot_internal() {
         let _ballot = init_ballot_internal(1);
+        assert!(true);
+    }
+
+    #[test]
+    fn test_init_ballot() {
+        let _pubkey = init_ballot(1);
         assert!(true);
     }
 }
