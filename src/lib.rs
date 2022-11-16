@@ -2,10 +2,16 @@ use wasm_bindgen::prelude::*;
 use rsa::{PublicKey, RsaPrivateKey, RsaPublicKey, PaddingScheme, 
           pkcs8::EncodePublicKey, pkcs8::LineEnding};
 
-struct Ballot {
+pub struct Ballot {
     k       : usize,          // k-anonymity parameter
     privkey : RsaPrivateKey,  // private key in PKCS8 PEM encoding
     pubkey  : RsaPublicKey    // public key in PKCS8 PEM encoding
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: String);
 }
 
 fn gen_keypair() -> (RsaPublicKey, RsaPrivateKey) {
@@ -22,13 +28,25 @@ fn init_ballot_internal(_k: usize) -> Ballot {
 }
 
 /**
-  Initializes a new ballot.
-  k - the k-anonymity parameter.
+  Returns the public key for a given ballot encoded in PEM (PKCS8) format.
+  ballot - pointer to the Ballot object to extract the public key for
 */
 #[wasm_bindgen]
-pub fn init_ballot(k: u32) -> String {
+pub fn get_ballot_pubkey_pem(ballot: *const Ballot) -> String {
+    unsafe {
+        return (*ballot).pubkey.to_public_key_pem(LineEnding::default()).unwrap();
+    }
+}
+
+/**
+  Initializes a new ballot.
+  k - the k-anonymity parameter
+*/
+#[wasm_bindgen]
+pub fn init_ballot(k: u32) -> *const Ballot {
     let ballot = init_ballot_internal(k as usize);
-    return ballot.pubkey.to_public_key_pem(LineEnding::default()).unwrap();
+    log(format!("Ballot initialized with k={}", k));
+    return &ballot;
 } 
 
 /**
@@ -38,6 +56,11 @@ pub fn init_ballot(k: u32) -> String {
 #[wasm_bindgen]
 pub fn vote(encrypted_vote: String) {
 
+}
+
+#[wasm_bindgen]
+pub fn finalize_ballot() {
+    
 }
 
 #[cfg(test)]

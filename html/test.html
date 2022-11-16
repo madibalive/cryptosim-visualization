@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <title>Private Voting in Rust + Webassembly</title>
     <script type="module">
-      import init, { init_ballot } from '../pkg/private_voting.js'
+      import init, { init_ballot, get_ballot_pubkey_pem } from '../pkg/private_voting.js'
 
       async function run() {
         await init()
-        document.body.textContent = init_ballot();
+        var ballot = init_ballot(1);
+        document.body.textContent = get_ballot_pubkey_pem(ballot);
       }
 
       run()
