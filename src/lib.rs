@@ -15,7 +15,7 @@ extern "C" {
     fn log(s: String);
 }
 
-#[cfg(test)]
+#[cfg(target_arch="x86_64")]
 fn log(s: String) {
     println!("{}", s);
 }
@@ -62,7 +62,7 @@ pub fn vote(encrypted_vote: String) {
 
 /// Finalizes the ballot in order to reveal the results.
 #[wasm_bindgen]
-pub fn finalize_ballot() {
+pub fn finalize_ballot(ballot: *const Ballot) {
     
 }
 

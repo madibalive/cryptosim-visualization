@@ -19,6 +19,10 @@ To run the unit tests, execute
     
     $ cargo test
 
+To run tests in a browser, execute
+
+    $ wasm-pack test --chrome
+
 To build the WASM target and its JS bindings, run
 
     $ wasm-pack build --target web
