@@ -8,10 +8,16 @@ pub struct Ballot {
     pubkey  : RsaPublicKey    // public key in PKCS8 PEM encoding
 }
 
+#[cfg(target_family="wasm")]
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: String);
+}
+
+#[cfg(test)]
+fn log(s: String) {
+    println!("{}", s);
 }
 
 fn gen_keypair() -> (RsaPublicKey, RsaPrivateKey) {
@@ -27,10 +33,8 @@ fn init_ballot_internal(_k: usize) -> Ballot {
     return Ballot {k: _k, privkey: _privkey, pubkey: _pubkey}
 }
 
-/**
-  Returns the public key for a given ballot encoded in PEM (PKCS8) format.
-  ballot - pointer to the Ballot object to extract the public key for
-*/
+/// Returns the public key for a given ballot encoded in PEM (PKCS8) format.
+/// ballot - pointer to the Ballot object to extract the public key for
 #[wasm_bindgen]
 pub fn get_ballot_pubkey_pem(ballot: *const Ballot) -> String {
     unsafe {
@@ -49,15 +53,14 @@ pub fn init_ballot(k: u32) -> *const Ballot {
     return &ballot;
 } 
 
-/**
-  Submit an encrypted vote.
-  encrypted_vote - encrypted vote encoded in Base64
-*/
+/// Submit an encrypted vote.
+/// encrypted_vote - encrypted vote encoded in Base64
 #[wasm_bindgen]
 pub fn vote(encrypted_vote: String) {
 
 }
 
+/// Finalizes the ballot in order to reveal the results.
 #[wasm_bindgen]
 pub fn finalize_ballot() {
     
@@ -81,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_init_ballot() {
-        let _pubkey = init_ballot(1);
-        assert!(true);
+        let _ballot = init_ballot(1);
+        assert!(!_ballot.is_null());
     }
 }
