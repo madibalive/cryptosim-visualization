@@ -19,12 +19,16 @@ To run the unit tests, execute
     
     $ cargo test
 
-To run tests in a browser, execute
-
-    $ wasm-pack test --chrome
-
 To build the WASM target and its JS bindings, run
 
     $ wasm-pack build --target web
+    
+The WASM target and JS bindings will then be placed in a `pkg` directory.
+
+### Testing in a browser
+
+To run unit tests in a browser, execute
+
+    $ wasm-pack test --chrome
 
 To test calling the compiled WASM from Javascript code, there is a simple HTML under the `html` directory, named `test.html`. It has to be served over HTTP and not just opened directly as a file in the browser, since otherwise, CORS policies will block importing the Javascript file with the WASM bindings.
