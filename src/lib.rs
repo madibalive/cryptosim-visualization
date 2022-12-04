@@ -1,7 +1,9 @@
+use std::str;
 use wasm_bindgen::prelude::*;
+use sha2::Sha256;
 use rsa::{PublicKey, RsaPrivateKey, RsaPublicKey, PaddingScheme, 
-          pkcs8::EncodePublicKey, pkcs8::LineEnding};
-use std::collections::HashMap;          
+          pkcs8::EncodePublicKey, pkcs8::DecodePublicKey, pkcs8::LineEnding};
+use std::collections::HashMap;
 
 #[wasm_bindgen]
 pub struct Ballot {
@@ -31,6 +33,35 @@ fn gen_keypair() -> (RsaPublicKey, RsaPrivateKey) {
     return (pubkey, privkey)
 }
 
+/// Encrypts a message using RSA encryption with OAEP padding
+/// pubkey - RSA public key
+/// msg - message to encrypt as a string
+/// Returns a PEM encoding of the encrypted message
+fn encrypt_message_internal(pubkey: RsaPublicKey, msg : String) -> String {
+    let mut rng = rand::thread_rng();
+    let padding = PaddingScheme::new_oaep::<Sha256>();
+    let encrypted_msg = pubkey.encrypt(&mut rng, padding, msg.as_bytes()).expect("Failed to encrypt");
+    return base64::encode(encrypted_msg)
+}
+
+/// Encrypts a message given a PEM encoded public key
+/// pubkey - PEM encded public key
+/// msg - message to encrypt as a string
+/// Returns a PEM encoding of the encrypted message
+#[wasm_bindgen]
+pub fn encrypt_message(pubkey_pem: &str, msg: String) -> String {
+    let pubkey = RsaPublicKey::from_public_key_pem(pubkey_pem).expect("Failed to decode public key PEM");
+    return encrypt_message_internal(pubkey, msg)
+}
+
+fn decrypt_message(privkey : &RsaPrivateKey, msg: String) -> String {
+    let padding = PaddingScheme::new_oaep::<Sha256>();
+    let decoded_msg = base64::decode(msg).expect("Failed to decode Base64");
+    let decrypted_msg_bytes = privkey.decrypt(padding, &decoded_msg).expect("Failed to decrypt");
+    let decrypted_msg = String::from_utf8(decrypted_msg_bytes).expect("Failed to conver to string");
+    return decrypted_msg.to_owned();
+}
+
 #[wasm_bindgen]
 impl Ballot {
 
@@ -57,17 +88,18 @@ impl Ballot {
 
     /// Submit an encrypted vote.
     /// encrypted_vote - encrypted vote encoded in Base64
-    pub fn vote(&mut self, encrypted_vote: String) {
-        log(format!("Received a new vote: {}", encrypted_vote));
+    pub fn vote(&mut self, encrypted_vote : String) {
+        let vote = decrypt_message(&self.privkey, encrypted_vote);
+        log(format!("Received a new vote: {}", vote));
         
-        self.votes.push(encrypted_vote);
+        self.votes.push(vote);
         log(format!("Added vote to list"));
     }
 
     /// Finalizes the ballot in order to reveal the results.
     pub fn finalize(&self) -> String {
         let total_votes = self.votes.len();
-        log(format!("Received {} votes in total", total_votes));
+        log(format!("Received a total of {} votes.", total_votes));
         
         if total_votes < self.k as usize {
             log(format!("Received less votes than minimum quorum size. Cannot finalize ballot."));
@@ -104,21 +136,33 @@ mod tests {
 
     #[test]
     fn test_get_pubkey_pem() {
-        let _ballot = Ballot::new(1);
-        let _pubkey_pem = _ballot.get_pubkey_pem();
+        let ballot = Ballot::new(1);
+        let pubkey_pem = ballot.get_pubkey_pem();
+        log(format!("Public key: {}", pubkey_pem))
     }
 
     #[test]
     fn test_vote() {
-        let mut _ballot = Ballot::new(1);
-        _ballot.vote("test".to_owned());
+        let mut ballot = Ballot::new(1);
+        let encrypted_vote = encrypt_message(&ballot.get_pubkey_pem(), "test".to_owned());
+        ballot.vote(encrypted_vote);
+    }
+
+    #[test]
+    fn test_encrypt_decrypt() {
+        let ballot = Ballot::new(1);
+        let msg = "test";
+        let encrypted_msg = encrypt_message(&ballot.get_pubkey_pem(), msg.to_owned());
+        let decrypted_msg = decrypt_message(&ballot.privkey, encrypted_msg);
+        assert!(decrypted_msg == msg)
     }
 
     #[test]
     fn test_finalize_ballot() {
-        let mut _ballot = Ballot::new(1);
-        _ballot.vote("test".to_owned());
-        let winner = _ballot.finalize();
+        let mut ballot = Ballot::new(1);
+        let encrypted_vote = encrypt_message(&ballot.get_pubkey_pem(), "test".to_owned());
+        ballot.vote(encrypted_vote);
+        let winner = ballot.finalize();
         assert!(winner == "test");
         log(format!("Ballot winner: {}", winner))
     }
@@ -126,7 +170,7 @@ mod tests {
     #[test]
     fn test_finalize_less_than_k() {
         let _ballot = Ballot::new(1);
-        _ballot.finalize();
+        assert!( _ballot.finalize() == "" );
     }
     
 }

@@ -20,12 +20,13 @@ fn test_get_pubkey_pem() {
 
 #[wasm_bindgen_test]
 fn test_vote() {
-    let mut _ballot = Ballot::new(1);
-    _ballot.vote("test".to_owned());
+    let mut ballot = Ballot::new(1);
+    let encrypted_vote = encrypt_message(&ballot.get_pubkey_pem(), "test".to_owned());
+    ballot.vote(encrypted_vote);
 }   
 
 #[wasm_bindgen_test]
 fn test_finalize_ballot() {
-    let _ballot = Ballot::new(1);
-    _ballot.finalize();
+    let ballot = Ballot::new(1);
+    ballot.finalize();
 }
