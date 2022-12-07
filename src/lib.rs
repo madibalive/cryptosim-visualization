@@ -6,8 +6,9 @@ use rsa::{PublicKey, RsaPrivateKey, RsaPublicKey, PaddingScheme,
 use std::collections::HashMap;
 
 #[wasm_bindgen]
+/// Represents a privacy-preserving ballot
 pub struct Ballot {
-    k       : u32,          // k-anonymity parameter
+    k       : u32,            // k-anonymity parameter
     privkey : RsaPrivateKey,  // private key in PKCS8 PEM encoding
     pubkey  : RsaPublicKey,   // public key in PKCS8 PEM encoding
     votes   : Vec<String>     // list of submitted votes 

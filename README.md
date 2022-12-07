@@ -32,3 +32,10 @@ To run unit tests in a browser, execute
     $ wasm-pack test --chrome
 
 To test calling the compiled WASM from Javascript code, there is a simple HTML under the `html` directory, named `test.html`. It has to be served over HTTP and not just opened directly as a file in the browser, since otherwise, CORS policies will block importing the Javascript file with the WASM bindings.
+
+### Generating documentation
+To build the documentation for the `private_voting` library, execute
+
+     $ cargo doc
+     
+which outputs the documentation in HTML format under `target/doc`.
