@@ -39,3 +39,12 @@ To build the documentation for the `private_voting` library, execute
      $ cargo doc
      
 which outputs the documentation in HTML format under `target/doc`.
+
+## Publishing the package to NPM registry
+
+Run the following commands
+
+    $ wasm-pack build --scope <organization>
+    $ wasm-pack login
+    $ cd pkg
+    $ npm publish --access public
