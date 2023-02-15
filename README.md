@@ -44,7 +44,7 @@ which outputs the documentation in HTML format under `target/doc`.
 
 Run the following commands
 
-    $ wasm-pack build --scope <organization>
+    $ wasm-pack build --target bundler --scope <organization>
     $ wasm-pack login
     $ cd pkg
     $ npm publish --access public
