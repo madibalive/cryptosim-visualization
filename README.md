@@ -25,6 +25,12 @@ To build the WASM target and its JS bindings, run
     
 The WASM target and JS bindings will then be placed in a `pkg` directory.
 
+To test the library, use `html/test.html`, serving it using a local webserver (rather than opening the file directly which won't work due to CORS policies). You can run a simple Python HTTP server using:
+
+    $ python3 -m http.server 8000
+    
+and then access [https://localhost:8000/html/test.html](https://localhost:8000/html/test.html) in your browser.
+
 ### Testing in a browser
 
 To run unit tests in a browser, execute
