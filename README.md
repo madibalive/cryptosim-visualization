@@ -46,9 +46,9 @@ Clone the Cryptosim Visualization repository to your virtual machine using the f
 
 
 git clone https://github.com/cryptosat/cryptosim-visualization.git
-Navigate to the tutorial directory using the following command:
+Navigate to the cryptosim-visualization  directory using the following command:
 ```
-    cd tutorial
+    cd cryptosim-visualization 
 ```
 
 
